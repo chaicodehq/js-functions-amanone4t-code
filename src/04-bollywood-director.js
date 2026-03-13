@@ -46,12 +46,59 @@
  */
 export function createDialogueWriter(genre) {
   // Your code here
+
+  const genres = ["action", "romance", "comedy", "drama"];
+  if(!genres.includes(genre)) return null;
+  return  (hero, villain) => {
+    if( !hero || !villain) return "..."
+    if(genre == "action"){
+      return `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
+    }else if(genre == "romance"){
+      return `${hero} whispers: '${villain}, tum mere liye sab kuch ho'`
+    }else if(genre == "comedy"){
+      return `${hero} laughs: '${villain} bhai, kya kar rahe ho yaar!'`
+    }else if(genre == "drama"){
+      return `${hero} cries: '${villain}, tune mera sab kuch cheen liya!'`
+    }
+  }
+
 }
 
 export function createTicketPricer(basePrice) {
   // Your code here
+  if(basePrice <= 0) return null;
+
+  return (seatType, isWeekend = false) => {
+    let price = 0;
+    const seatTypes = ["silver", "gold", "platinum"]
+    if(!seatTypes.includes(seatType)) return null;
+    if(seatType ==="silver"){
+      price = basePrice;
+    }else if(seatType ==="gold"){
+      price = basePrice * 1.5
+    }else if(seatType ==="platinum"){
+      price = basePrice * 2;
+    }
+    return price *= (isWeekend)? 1.3 : 1;
+    }
+
 }
 
 export function createRatingCalculator(weights) {
   // Your code here
+  if(typeof weights !== "object" || weights === null) return null;
+
+  return function(scores) {
+    if (typeof scores !== "object" || scores === null) return null;
+
+    let total = 0;
+
+    for (const key in weights) {
+      if (scores.hasOwnProperty(key)) {
+        total += scores[key] * weights[key];
+      }
+    }
+
+    return Math.round(total * 10) / 10;
+  };
 }

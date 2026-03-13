@@ -55,20 +55,64 @@
  */
 export function mixColors(color1, color2) {
   // Your code here
+  if(color1 === null || color2 === null || typeof color1 === "undefined" || typeof color2 === "undefined") return null;
+  const newColor = {name : `${color1.name}-${color2.name}`,
+    r : Math.round((color1.r + color2.r) / 2),
+    g : Math.round((color1.g + color2.g) / 2),
+    b : Math.round((color1.b + color2.b) / 2)
+  }
+  return newColor;
 }
 
 export function adjustBrightness(color, factor) {
   // Your code here
+  if(color === null || typeof factor !== "number") return null;
+  const newColor = {
+    name: color.name,
+    r : Math.min(Math.max(color.r * factor, 0), 255),
+    g : Math.min(Math.max(color.g * factor, 0), 255),
+    b : Math.min(Math.max(color.b * factor, 0), 255),
+
+  }
+  return newColor;
 }
 
 export function addToPalette(palette, color) {
   // Your code here
+  if(!Array.isArray(palette)) return [color];
+  const copy = [...palette]
+  if(color === null || typeof color === "undefined") return copy;
+  copy.push(color);
+  return copy
 }
 
 export function removeFromPalette(palette, colorName) {
   // Your code here
+  if (!Array.isArray(palette)) return [];
+
+  return palette.filter(color => color.name !== colorName);
 }
 
 export function mergePalettes(palette1, palette2) {
   // Your code here
+  const pal1 = Array.isArray(palette1) ? [...palette1] : [];
+  const pal2 = Array.isArray(palette2) ? [...palette2] : [];
+
+  for (const color of pal2) {
+    let exists = false;
+
+    for (const c of pal1) {
+      if (c.name === color.name) {
+        exists = true;
+        break;
+      }
+    }
+
+    if (!exists) {
+      pal1.push(color);
+    }
+  }
+
+  return pal1;
+
 }

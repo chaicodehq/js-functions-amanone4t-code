@@ -54,20 +54,68 @@
  */
 export function repeatChar(char, n) {
   // Your code here
+  if(n <= 0) return "";
+  if(typeof char !== "string" || char === "") return "";
+  return char + repeatChar(char, n - 1)
+
 }
 
 export function sumNestedArray(arr) {
   // Your code here
+  if (!Array.isArray(arr)) return 0;
+
+  if (arr.length === 0) return 0;
+
+  let sum = 0;
+
+  for (let item of arr) {
+      if (Array.isArray(item)) {
+          sum += sumNestedArray(item);
+      } else if (typeof item === "number") {
+          sum += item;
+      }
+  }
+  return sum;
+
 }
 
 export function flattenArray(arr) {
   // Your code here
+  if(!Array.isArray(arr)) return [];
+  return arr.flat(Infinity);
 }
 
 export function isPalindrome(str) {
   // Your code here
+  
+  if(typeof str !== "string") return false;
+  const normalized = str.toLowerCase();
+
+  const reversed = normalized.split("").reverse().join("");
+
+  return normalized === reversed;
 }
 
 export function generatePattern(n) {
   // Your code here
+  //   5. generatePattern(n)
+  //  *      - Generate symmetric mehndi border pattern
+  //  *      - n = 1 => ["*"]
+  //  *      - n = 2 => ["*", "**", "*"]
+  //  *      - n = 3 => ["*", "**", "***", "**", "*"]
+  //  *      - Pattern goes from 1 star up to n stars, then back down to 1
+  //  *      - Use recursion to build the ascending part, then mirror it
+  //  *      - Agar n <= 0, return []
+  //  *      - Agar n is not a positive integer, return []
+  if(n <= 0) return [];
+  if(typeof n !== "number" || !Number.isInteger(n)) return [];
+  let pattern = [];
+  for(let i = 1; i <= n; i++){
+    pattern.push("*".repeat(i));
+  }
+  for(let i = n - 1; i >= 1; i--){
+    pattern.push("*".repeat(i));
+  }
+  return pattern;
+
 }

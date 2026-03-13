@@ -46,16 +46,63 @@
  */
 export function createFilter(field, operator, value) {
   // Your code here
+  return function(object){
+    if(operator === ">"){
+      return object[field] > value;
+    }else if(operator === "<"){
+      return object[field] < value;
+    }else if(operator === ">="){
+      return object[field] >= value;
+    }else if(operator === "<="){
+      return object[field] <= value;
+    }else if(operator === "==="){
+      return object[field] === value;
+    }else{
+      return false;
+    }
+  }
 }
 
 export function createSorter(field, order = "asc") {
   // Your code here
+  return function (a, b) {
+    let valueA = a[field];
+    let valueB = b[field];
+
+    if (typeof valueA === "string" && typeof valueB === "string") {
+      valueA = valueA.toLowerCase();
+      valueB = valueB.toLowerCase();
+    }
+
+    if (valueA < valueB) return order === "asc" ? -1 : 1;
+    if (valueA > valueB) return order === "asc" ? 1 : -1;
+    return 0;
+  };
 }
 
 export function createMapper(fields) {
   // Your code here
+  return function (obj) {
+    return fields.reduce((acc, field) => {
+      if (field in obj) {
+        acc[field] = obj[field];
+      }
+      return acc;
+    }, {});
+  };
+
 }
 
 export function applyOperations(data, ...operations) {
   // Your code here
+//   *   4. applyOperations(data, ...operations)
+//  *      - data: array of objects
+//  *      - operations: any number of functions to apply SEQUENTIALLY
+//  *      - Each operation takes an array and returns an array
+//  *      - Apply first operation to data, then second to result, etc.
+//  *      - Return final result
+//  *      - Agar data not array, return []
+  if(!Array.isArray(data)) return [];
+  return operations.reduce((res, operation) => operation(res), data);
+
 }
